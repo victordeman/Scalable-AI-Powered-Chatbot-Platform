@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_URL=${POSTGRES_URL}
+      - MONGO_URL=${MONGO_URL}
+      - REDIS_URL=${REDIS_URL}
+    depends_on:
+      - db-postgres
+      - db-mongo
+      - redis
+  db-postgres:
+    image: postgres:16
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=chatbot
+    ports:
+      - "5432:5432"
+  db-mongo:
+    image: mongo:7.0
+    ports:
+      - "27017:27017"
+  redis:
+    image: redis:7.4
+    ports:
+      - "6379:6379"
